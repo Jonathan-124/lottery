@@ -1,0 +1,518 @@
+{% extends 'base.html' %}
+
+{% block title %}What are the odds | Powerball lottery statistical analysis methodology{% endblock title %}
+
+{% block content %}
+<h2>Methodology</h2>
+<br>
+<p>
+    This page explains how the predictions associated with each Powerball draw are made.
+    Most of the important information can be understood by skipping through the equations.
+</p>
+<br>
+<h3>
+    Background
+</h3>
+<p>
+    <a href="https://www.powerball.com/">Powerball</a> is a lottery game offered in the United States. Each ticket costs \(\$ 2\) to purchase, where players choose \(5\) different numbers out of \(69\), in addition to \(1\) number out of \(26\).
+    Every week on Wednesday and Saturday, a drawing event occurs where winning numbers are chosen.
+    \(5\) white balls are chosen out of a total of \(69\) white balls, and \(1\) red Powerball is chosen out of a total of \(26\) red balls.
+    All balls are numbered, and based on the amount of numbers from the draw that match with the numbers chosen on a ticket, players can win different amounts of prizes as shown in the table below:
+    <table class="table table-bordered table-hover">
+        <caption>Winning Ticket Payouts (Powerplay excluded)</caption>
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Number of matching white balls</th>
+                <th scope="col">Number of matching red balls</th>
+                <th scope="col">Prize</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>\(5\)</td>
+                <td>\(1\)</td>
+                <td>\(\text{Jackpot}\) 🥳</td>
+            </tr>
+            <tr>
+                <td>\(5\)</td>
+                <td>\(0\)</td>
+                <td>\(\$ 1,000,000\)</td>
+            </tr>
+            <tr>
+                <td>\(4\)</td>
+                <td>\(1\)</td>
+                <td>\(\$ 50,000\)</td>
+            </tr>
+            <tr>
+                <td>\(4\)</td>
+                <td>\(0\)</td>
+                <td>\(\$ 100\)</td>
+            </tr>
+            <tr>
+                <td>\(3\)</td>
+                <td>\(1\)</td>
+                <td>\(\$ 100\)</td>
+            </tr>
+            <tr>
+                <td>\(3\)</td>
+                <td>\(0\)</td>
+                <td>\(\$ 7\)</td>
+            </tr>
+            <tr>
+                <td>\(2\)</td>
+                <td>\(1\)</td>
+                <td>\(\$ 7\)</td>
+            </tr>
+            <tr>
+                <td>\(1\)</td>
+                <td>\(1\)</td>
+                <td>\(\$ 4\)</td>
+            </tr>
+            <tr>
+                <td>\(0\)</td>
+                <td>\(1\)</td>
+                <td>\(\$ 4\)</td>
+            </tr>
+        </tbody>
+    </table>
+    If a ticket's combination of numbers does not match a pattern shown in the above table, there would be no prize awarded. The Jackpot amount fluctuates between each draw.
+    If the Jackpot was not won in the previous draw, a portion of the Jackpot would be rolled over into the next draw, which results in increasingly larger Jackpots during consecutive draws with no Jackpot winners.
+</p>
+<br>
+<h3>
+    Probability
+</h3>
+<p>
+    First, we can find the probabilities of all white ball combinations using the <a href="https://en.wikipedia.org/wiki/Hypergeometric_distribution">hypergeometric distribution</a>:
+    $$
+    P(W = w)
+    =
+    \frac{
+        \begin{pmatrix}
+           5 \\
+           w
+        \end{pmatrix}
+        \begin{pmatrix}
+           69-5 \\
+           5-w
+        \end{pmatrix}
+    }{
+        \begin{pmatrix}
+           69 \\
+           5
+        \end{pmatrix}
+    }
+    ,
+    w \in \{0, 1, 2, 3, 4, 5\}
+    $$
+    where \(P(W=w)\) is the probability of matching exactly \(w\) white balls, and \(\begin{pmatrix} n \\ k \end{pmatrix}\) is the <a href="https://en.wikipedia.org/wiki/Combination">combinations</a> formula.
+    <br><br>
+    Because we are only drawing \(1\) red powerball, finding the probabilities of the red powerball is simple:
+    $$ P(R=r) = \begin{cases} \frac{25}{26}, r=0 \\ \frac{1}{26}, r=1\end{cases}$$
+    The drawing of white balls is independent of the drawing of the red powerball, so the joint probability function of a combination of \(w\) white balls and \(r\) red balls can be found by:
+    $$
+    P(W=w, R=r) = \begin{cases}
+    \frac{
+        \begin{pmatrix}
+           5 \\
+           w
+        \end{pmatrix}
+        \begin{pmatrix}
+           64 \\
+           5-w
+        \end{pmatrix}
+    }{
+        \begin{pmatrix}
+           69 \\
+           5
+        \end{pmatrix}
+    }
+    \times
+    \frac{25}{26}, \ \ \ w \in \{0, 1, 2, 3, 4, 5\}, \ \ r=0
+    \\ \\
+    \frac{
+        \begin{pmatrix}
+           5 \\
+           w
+        \end{pmatrix}
+        \begin{pmatrix}
+           64 \\
+           5-w
+        \end{pmatrix}
+    }{
+        \begin{pmatrix}
+           69 \\
+           5
+        \end{pmatrix}
+    }
+    \times
+    \frac{1}{26}, \ \ \ w \in \{0, 1, 2, 3, 4, 5\}, \ \ r=1
+    \end{cases}$$
+    Using this formula, we can calculate the exact odds of matching each combination of a winning ticket:
+    <table class="table table-bordered table-hover">
+        <caption>Winning Ticket Probabilities</caption>
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Number of matching white balls</th>
+                <th scope="col">Number of matching red balls</th>
+                <th scope="col">Probability of Matching</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>\(5\)</td>
+                <td>\(1\)</td>
+                <td>$$\frac{1}{292,201,338}$$</td>
+            </tr>
+            <tr>
+                <td>\(5\)</td>
+                <td>\(0\)</td>
+                <td>$$\frac{25}{292,201,338} = \frac{1}{11,688,053.52}$$</td>
+            </tr>
+            <tr>
+                <td>\(4\)</td>
+                <td>\(1\)</td>
+                <td>$$\frac{320}{292,201,338} \approx \frac{1}{913,129.18}$$</td>
+            </tr>
+            <tr>
+                <td>\(4\)</td>
+                <td>\(0\)</td>
+                <td>$$\frac{8,000}{292,201,338} \approx \frac{1}{36,525.17}$$</td>
+            </tr>
+            <tr>
+                <td>\(3\)</td>
+                <td>\(1\)</td>
+                <td>$$\frac{20,160}{292,201,338} \approx \frac{1}{14,494.11}$$</td>
+            </tr>
+            <tr>
+                <td>\(3\)</td>
+                <td>\(0\)</td>
+                <td>$$\frac{504,000}{292,201,338} \approx \frac{1}{579.76}$$</td>
+            </tr>
+            <tr>
+                <td>\(2\)</td>
+                <td>\(1\)</td>
+                <td>$$\frac{416,640}{292,201,338} \approx \frac{1}{701.33}$$</td>
+            </tr>
+            <tr>
+                <td>\(1\)</td>
+                <td>\(1\)</td>
+                <td>$$\frac{3,176,880}{292,201,338} \approx \frac{1}{91.98}$$</td>
+            </tr>
+            <tr>
+                <td>\(0\)</td>
+                <td>\(1\)</td>
+                <td>$$\frac{7,624,512}{292,201,338} \approx \frac{1}{38.32}$$</td>
+            </tr>
+        </tbody>
+    </table>
+The same information can be represented using a bar graph:
+<br><br>
+<div id="qwe"></div>
+As the probabilities differ by orders of magnitude, a <a href="https://en.wikipedia.org/wiki/Logarithmic_scale">logarithmic scale</a> is used.
+Be extremely wary when interpreting log scales — in this graph it vastly over-represents the probability of rarer events. Note the use of <a href="https://en.wikipedia.org/wiki/Scientific_notation#E_notation">scientific notation</a> instead of fractions to represent probabilities.
+For example, the probability of matching 5 white balls and 1 powerball can be expressed in all of the following ways:
+$$
+P(W=5, r=1) = \frac{1}{292,201,338} \approx 0.00000000342 = 3.42 \times 10^{-9} = 3.42\text{ E -}9
+$$
+<br>
+We can also calculate the probabilities of buying a winning/losing ticket:
+$$
+P(\text{winning ticket}) = \sum \text{each winning ticket probability} = \frac{1}{292,201,338} + \dots + \frac{1,270,752}{48,700,223} = \frac{11,750,538}{292,201,338} \approx 4.0\%
+$$
+$$
+P(\text{losing ticket}) = 1 -  P(\text{winning ticket}) = \frac{280,450,800}{292,201,338} \approx 96.0 \%
+$$
+</p>
+<br>
+<h3>
+    Expected Return
+</h3>
+<p>
+    Using the probabilities we have calculated above, we can calculate the <a href="https://en.wikipedia.org/wiki/Expected_return">expected return</a> of a Powerball ticket.
+    In other words, we can think of the \(\$2\) cost to purchase a ticket as an "investment", and calculate the expected amount of money will be gained/lost.
+    Let \(x\) be the advertised Jackpot amount, \(E(R)\) be the expected return in dollars, \(P_i\) be the probability of each combination, and \(R_i\) be the associated prize amount with each combination, minus the \(\$2\) ticket cost:
+    $$
+    \begin{aligned}
+    E(R) &= \sum P_i R_i \\
+    &= P(W=5, R=1) \cdot (x - 2) + P(W=5, R=0) \cdot (1,000,000 - 2) + \cdots + P(\text{losing ticket})\cdot(-2)\\
+    &= P(W=5, R=1) \cdot x + P(W=5, R=0) \cdot 1,000,000 + \cdots - 2 \\
+    &\approx \frac{1}{292,201,338} \cdot x - 1.68
+    \end{aligned}
+    $$
+    Here we get the first glimpse of a simple equation we can draw conclusions with.
+    As the Jackpot changes, the expected return on investment also changes proportional the Jackpot amount!
+    As a naive solution, we can solve for the break-even point: when \(E(R)=0\), \(x = 490,936,628\).
+    In other words, when the jackpot is greater than \(\$490,936,628\), the expected return is actually positive!
+    However, we'll soon see the flaws with this preliminary conclusion that we have drawn.
+</p>
+<br>
+<h3>
+    Sharing the Jackpot
+</h3>
+<p>
+    The first problem we encounter is the possibility of a Jackpot being split by multiple winners.
+    When more than one ticket match all the numbers in the same draw, the Jackpot will be split into even portions among all winning tickets.
+    This means that the expected Jackpot amount is always going to be less than the advertised Jackpot!
+    To know the expected Jackpot amount, we would have to know the expected number of multiple Jackpot winners.
+    To know the expected number of multiple Jackpot winners, we would have to know the number of tickets purchased!
+    However, we can only estimate the number of tickets purchased before each drawing, which leads us to...
+    <div id="asd"></div>
+    The graph above is a scatterplot of jackpot amount vs. the number of tickets purchased for all Powerball draws since the 2015 rule change.
+    Each blue dot is an instance of a past draw. A general trend can be seen: when the advertised jackpot amount is less than ~\(\$300\) million, the number of tickets purchased is roughly the same.
+    This can be attributed to habitual Powerball lottery players who purchase tickets at a fixed schedule.
+    During less common instances when the jackpot increases beyond a certain threshold, habitual lottery players might increase the number of tickets they purchase, while generally non-lottery playing folks might start purchasing tickets as well, leading to the increase in number of tickets purchased above the \(\$300\) million mark.
+    Although there is very little data at the higher end of the spectrum, we can assume that beyond a certain point, even if the Jackpot keeps increasing, the amount of tickets purchased would remain at a similar level, as the proportion of the population that would buy tickets in the first place becomes saturated, and players are no longer willing to spend more money on tickets even with a larger Jackpot.
+    <br><br>
+    The <a href="https://en.wikipedia.org/wiki/Gompertz_function">Gompertz curve</a> models these assumptions nicely, and is used to fit the grey curve to the data on the graph above:
+    $$
+    f(x) = a + be^{-ce^{-dx}}
+    $$
+    where \(x\) is the advertised Jackpot amount and \(f(x)\) is the number of tickets purchased. This curve is re-fitted to the data every time a new draw occurs.
+    <br><br>
+    Let \(P(S=s)\) be the probability of \(s\) shared Jackpots. Then \(S\) follows a <a href="https://en.wikipedia.org/wiki/Binomial_distribution">binomial distribution</a> with the following probability mass function:
+    $$
+    P(S=s) =
+    \begin{pmatrix}
+       f(x) \\
+       s
+    \end{pmatrix}
+    \cdot [P(\text{Jackpot})]^{s} \cdot [1 - P(\text{Jackpot})]^{f(x) - s}
+    $$
+    Using this information, we can also find the probability of there being at least one Jackpot winner:
+    $$
+    \begin{aligned}
+    P(S \ge 1) &= 1 - P(S=0) \\
+    &= 1 - [1-P(\text{Jackpot})]^{f(x)}
+    \end{aligned}
+    $$
+</p>
+<h3>
+    Advertised vs. Expected Jackpot amounts
+</h3>
+<p>
+    We can use this distribution to calculate \(E(\text{Jackpot})\) (the expected jackpot amount) as a function of \(x\) (the advertised jackpot amount):
+    $$
+    \begin{aligned}
+    E(\text{Jackpot}) &= P(S=0) \cdot x + \sum_{s=1}^{\infty} P(S=s) \cdot\frac{x}{s} \\
+    &= P(S=0) \cdot x +
+        \sum_{s=1}^{\infty}
+            \begin{pmatrix}
+               f(x) \\
+               s
+            \end{pmatrix}
+            \cdot [P(\text{Jackpot})]^{s} \cdot [1 - P(\text{Jackpot})]^{f(x) - s}
+        \cdot\frac{x}{s} \\
+    &\approx P(S=0) \cdot x + \sum_{s=1}^{\infty} e^{- \lambda} \frac{\lambda ^ s}{s!} \cdot \frac{x}{s},  \text{ where} \ \lambda = f(x) \cdot P(\text{Jackpot}) \text{ via the Poisson Limit Theorem}
+    \end{aligned}
+    $$
+    Using this equation, we can go back to our expected returns equation we calculated earlier. Using the revised expected Jackpot amount instead of the advertised one:
+    $$
+    E(R) = \frac{1}{292,201,338} \cdot E(\text{Jackpot}) - 1.68
+    $$
+    The percentage yield is the expected return divided by the cost of a single ticket:
+    $$
+    \% \text{ Yield} = \frac{E(R)}{2} \times 100\%
+    $$
+</p>
+<br>
+<h3>
+    Discussion
+</h3>
+<p>
+    The methods outlined above are used to make the four main predictions for each Powerball draw: number of tickets sold, predicted winner distribution, probability of jackpot being won, and percentage yield.
+    To the casual reader, the most accessible predictor is the predicted percentage yield, which indicates the expected percentage of money gained/lost on the purchase of Powerball tickets.
+    Unfortunately, while the predicted yield is arguably the most useful predictor, it has two massive drawbacks:
+    <br><br>
+    The first is the common misunderstanding of what the percentage yield means. It is essential to remember that <b>a better yield does not guarantee winning money</b>. After all, the odds stay the same regardless of what the yield is.
+    What it does mean is that <b>the same \(\$2\) would be better spent on a ticket when the yield is higher than when the yield is lower</b>.
+    <br><br>
+    The second is the failure to account for the three horsemen of the jackpot winner apocalypse: annuity, taxes, and inflation. Because these factors are highly variable and dependent on a multitude of other variables, they were not included in the yield model.
+    However, it is certain that the actual jackpot that a winner receives would be much less than the advertised jackpot due to these three variables. In turn, the expected return/yield would be quite a bit lower than the model above predicts.
+    <br><br>
+    With all being said and done, <b>lotteries are not investments</b>, and <b>players should only infrequently spend a tiny portion of their disposable income on any lottery</b>, if they choose to do so.
+    While the allure of winning the jackpot by spending a measly \(\$2\) is great, it is never a good idea to habitually spend more than one can afford on gambling.
+</p>
+
+
+<script>
+function gompertz_curve(t, a, b, c, d){
+    var exp = Math.exp;
+    return (a + b * exp(-c * exp(-d * t)))
+}
+
+const dataset = {{ game.get_past_data | safe}};
+
+let fitted_curve = [];
+const prediction_funcs = {{ game.prediction_funcs | safe }};
+const curve_parameters = prediction_funcs['previous_curve_parameters']
+for (i = 1; i < 1800; i=i+10) {
+  fitted_curve.push([i, gompertz_curve(i, curve_parameters[0], curve_parameters[1], curve_parameters[2], curve_parameters[3])])
+}
+
+
+// set the dimensions and margins of the graph
+var margin = {top: 50, right: 30, bottom: 50, left: 30},
+    width = 0.6 * document.documentElement.clientWidth,
+    height = 0.6 * width
+
+// append the svg object to the body of the page
+var svg = d3.select("#asd")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+
+  // Add X axis
+  var x = d3.scaleLinear()
+    .domain([0, 1800])
+    .range([ 0, width ]);
+  svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x));
+
+  // Add Y axis
+  var y = d3.scaleLinear()
+    .domain([0, 800])
+    .range([ height, 0]);
+  svg.append("g")
+    .call(d3.axisLeft(y));
+
+// axes labels
+svg.append("text")
+        .attr("x", (width / 2))
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")
+        .style("font-size", "20px")
+        .attr("font-family", function(d,i) {return "serif"; })
+        .text("Powerball Jackpot amount vs. Number of tickets purchased");
+
+svg.append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height -6)
+    .attr("font-family", function(d,i) {return "serif"; })
+    .text("Jackpot (millions USD)");
+
+svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", 6)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .attr("font-family", function(d,i) {return "serif"; })
+    .text("Number of tickets purchased (millions)");
+
+  // Add dots
+  svg.append('g')
+    .selectAll("dot")
+    .data(dataset)
+    .enter()
+    .append("circle")
+      .attr("cx", function (d) { return x(d["jackpot_amount"]); } )
+      .attr("cy", function (d) { return y(d["num_tickets_purchased"] / 1000000); } )
+      .attr("r", 2)
+      .style("fill", "#3399ff")
+
+  svg.append('g')
+    .selectAll("dot")
+    .data(fitted_curve)
+    .enter()
+    .append("circle")
+      .attr("cx", function (d) { return x(d[0]); } )
+      .attr("cy", function (d) { return y(d[1] / 1000000); } )
+      .attr("r", 0.7)
+      .style("fill", "#676767")
+</script>
+<script>
+// set the dimensions and margins of the graph
+var margin = {top: 50, right: 30, bottom: 50, left: 30},
+    width = 0.6 * document.documentElement.clientWidth,
+    height = 0.6 * width
+
+var dist = d3.select("#qwe")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+odds = {{ game.odds | safe}};
+
+// tooltip
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "Probability: " + parseFloat((d[1] / odds.denominator).toPrecision(3)).toExponential();
+  })
+dist.call(tip);
+
+// axes
+var x = d3.scaleBand()
+          .range([0, width])
+          .padding(0.3);
+var y = d3.scaleLog()
+    .range([height, 0])
+    .domain([1e-9, 1e-1]);
+
+// Scale the range of the data in the domains
+x.domain(odds.wins.map(function(d) { return d[0]; }));
+
+dist.append('g')
+    .selectAll(".bar")
+     .data(odds.wins)
+     .enter()
+     .append("rect")
+     .attr("class", "bar")
+     .style("fill", "#3399ff")
+     .attr("x", function(d) { return x(d[0]); })
+     .attr("y", function(d) { return y(d[1] / odds.denominator); })
+     .attr("width", x.bandwidth())
+     .attr("height", function(d) { return height - y(d[1]/ odds.denominator); })
+     .on('mouseover', tip.show)
+     .on('mouseout', tip.hide)
+
+
+  // add the x Axis
+  dist.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+  // add the y Axis
+  dist.append("g")
+      .call(d3.axisLeft(y));
+
+// axes labels
+dist.append("text")
+        .attr("x", (width / 2))
+        .attr("y", 0 - (margin.top / 2))
+        .attr("text-anchor", "middle")
+        .style("font-size", "20px")
+        .attr("font-family", function(d,i) {return "serif"; })
+        .text("Probabilities of Matching Combinations");
+
+dist.append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", margin.left + margin.right + width / 2)
+    .attr("y", height + 35 )
+    .attr("font-family", function(d,i) {return "serif"; })
+    .text("Matching white + red ball combination");
+
+dist.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", 3)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .attr("font-family", function(d,i) {return "serif"; })
+    .text("Probability of match");
+
+</script>
+{% endblock content%}

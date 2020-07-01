@@ -1,0 +1,408 @@
+{% extends 'base.html' %}
+
+{% block title %}What are the odds | Powerball lottery statistical analysis{% endblock title %}
+
+{% block content %}
+
+<h4 id="next-drawing" class="text-center"></h4>
+<p id="estimated-jackpot" class="text-center"></p>
+<br>
+<table class="table table-bordered">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col"><a href="#" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="The probability that a selection matches any of the winning combinations. This is the only value in this table that does not vary with each draw. <br><br>See the <a href=&quot;{% url 'methodology_view' %}&quot;>methodology page</a> for details on the derivation of this probability.">Probability of buying a winning ticket</a></th>
+            <th scope="col"><a href="#" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="A dollar would be better spent on a ticket when the yield is more positive than when the yield is more negative. Note that <b>a more positive yield does not guarantee losing less money</b>.<br><br> *Excludes Powerplay tickets.<br><br>See the <a href=&quot;{% url 'methodology_view' %}&quot;>methodology page</a> for details on how the yield is calculated.">Predicted percentage yield*</a></th>
+            <th scope="col"><a href="#" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="The estimated odds that one or more tickets will win the jackpot.<br><br>See the <a href=&quot;{% url 'methodology_view' %}&quot;>methodology page</a> for details on the derivation of this value.">Predicted odds of Jackpot being won</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>4.02%</td>
+            <td id="predicted-yield"></td>
+            <td id="predicted-jackpot-win-odds"></td>
+        </tr>
+    </tbody>
+</table>
+<br>
+<div id="predicted-num-tickets-purchased"></div>
+<br><br>
+<div id="predicted-winner-distribution"></div>
+
+<br>
+<hr>
+<br>
+
+<h4 id="previous-drawing" class="text-center"></h4>
+<p id="previous-numbers" class="text-center"></p>
+<br>
+<table class="table table-bordered table-hover">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col"></th>
+            <th scope="col"><a href="#" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="Values estimated before the draw occured">Estimated</a></th>
+            <th scope="col"><a href="#" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="Actual values obtained after the draw">Actual</a></th>
+            <th scope="col"><a href="#" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="Measures how much the estimated and actual values differ. The closer the actual and estimated values are, the lesser the percent error.<br><br>See <a href='https://en.wikipedia.org/wiki/Approximation_error'>approximation error</a>.">Percent Error</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Total number of tickets purchased</td>
+            <td id="e-numtix"></td>
+            <td id="a-numtix"></td>
+            <td id="p-numtix"></td>
+        </tr>
+        <tr>
+            <td>Total number of winner tickets</td>
+            <td id="e-total"></td>
+            <td id="a-total"></td>
+            <td id="p-total"></td>
+        </tr>
+        <tr>
+            <td>Percentage of winning Tickets</td>
+            <td id="e-percent">4.02%</td>
+            <td id="a-percent"></td>
+            <td id="p-percent"></td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+<hr>
+<br>
+
+<h4 class="text-center">Frequently Asked Questions</h4>
+<br>
+<div class="card">
+    <div class="card-header" id="heading5">
+      <h2 class="mb-0">
+        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+          What does ________ mean?
+        </button>
+      </h2>
+    </div>
+
+    <div id="collapse5" class="collapse" aria-expanded="false" aria-labelledby="heading5">
+      <div class="card-body">
+        <u>Ticket</u>: one selection of 5 white balls plus 1 red Powerball.<br><br>
+        <u>Probability of buying a winning ticket</u>: The probability that one ticket would match the winning combination.<br><br>
+        <u>Predicted percentage yield</u>: the expected percentage of money spent that would be gained/lost. For example, if one were to spend $100 to purchase 50 Powerball tickets when the predicted percentage yield is -70%, they would be expected to lose $70.
+            Be extremely careful, the meaning of "expected" here is not exactly how we colloquially use the word, but rather the <a href="https://en.wikipedia.org/wiki/Expected_value">expected value</a> as mathematically defined. In other words, <b>a more positive yield does not guarantee losing less money</b>, but does mean a dollar would be better spent on a ticket when the yield is more positive than when the yield is more negative.<br><br>
+        <u>Predicted odds of Jackpot being won</u>: the probability that one or more tickets would win the Jackpot.<br><br>
+        <u>Predicted number of tickets purchased</u>: Based on past data, how many tickets are expected to be purchased for this drawing. This number influences the predicted percentage yield and odds of Jackpot being won.<br><br>
+        <u>Predicted Winning Ticket Distribution</u>: How many tickets are predicted to match each of the winning selections.<br><br>
+        <u>Total number of winner tickets</u>: The sum of the number of tickets in all winning categories.<br><br>
+        <u>Percentage of winning Tickets</u>: Number of winner tickets divided by the total number of tickets purchased, expressed as a percentage.<br><br>
+      </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header" id="headingOne">
+      <h2 class="mb-0">
+        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          Is this website officially associated with the Powerball lottery?
+        </button>
+      </h2>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-expanded="false" aria-labelledby="headingOne">
+      <div class="card-body">
+          This website is a personal project, and is not officially associated with the Multi-State Lottery Association that coordinates the Powerball lottery.
+          There is <b>no guarantee</b> to the accuracy of the data and analyses presented on this website. Please only use this website at your own discretion for reference purposes only.
+      </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header" id="heading2">
+      <h2 class="mb-0">
+        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+          Where is the data obtained from?
+        </button>
+      </h2>
+    </div>
+
+    <div id="collapse2" class="collapse" aria-expanded="false" aria-labelledby="heading2">
+      <div class="card-body">
+        Data on the total number of winning tickets, winning numbers, and jackpot amount for is obtained from the <a href="https://www.powerball.com/">Powerball</a> website.
+        <br><br>
+        Data from past draws and the number of total tickets purchased is obtained from the <a href="https://www.lottoreport.com/ticketcomparison.htm">lottoreport</a> website.
+      </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header" id="heading3">
+      <h2 class="mb-0">
+        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+          How are the predictions made?
+        </button>
+      </h2>
+    </div>
+
+    <div id="collapse3" class="collapse" aria-expanded="false" aria-labelledby="heading3">
+      <div class="card-body">
+        See the <a href="{% url 'methodology_view' %}">methodology page</a> for an explanation of the methods/models used to make the predictions.
+      </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header" id="heading4">
+      <h2 class="mb-0">
+        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+          Why does the bar graph (predicted winning ticket distribution) look weird?
+        </button>
+      </h2>
+    </div>
+
+    <div id="collapse4" class="collapse" aria-expanded="false" aria-labelledby="heading4">
+      <div class="card-body">
+        Because the numbers for the different types of winning tickets differ by orders of magnitude, a <a href="https://en.wikipedia.org/wiki/Logarithmic_scale">logarithmic scale</a> is used.
+        Visually, this results in greatly under-represented numbers at the higher end, and greatly over-represented numbers at the lower end.
+        <br><br>
+        For an explanation of the labels on the y-axis, see <a href="https://en.wikipedia.org/wiki/Scientific_notation#E_notation">scientific notation</a>.
+      </div>
+    </div>
+</div>
+<br><br>
+<script>
+
+$(document).ready(function(){
+    $('[data-toggle="popover"]').on('click', function(e) {e.preventDefault(); return true;});
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+
+    const next_draw_data = {{ game.get_next_draw_data | safe }};
+    const most_recent_draw_data = {{ game.get_most_recent_draw_data | safe}};
+    const dataset = {{ game.get_past_data | safe}};
+    const prediction_funcs = {{ game.prediction_funcs | safe }};
+
+    predicted_yield = ((next_draw_data[2] / 2) * 100).toPrecision(3);
+    jackpot_win_odds = ((next_draw_data[3] * 1000) / 10).toPrecision(3);
+
+    $("#next-drawing").text(`Powerball Next Draw Date: ${next_draw_data[0]}`)
+    $("#estimated-jackpot").text(`Estimated Jackpot: ${next_draw_data[1]} Million`)
+    $("#predicted-yield").text(predicted_yield + "%")
+    $("#predicted-jackpot-win-odds").text(jackpot_win_odds + "%")
+
+
+    function gompertz_curve(t, a, b, c, d){
+        var exp = Math.exp;
+        return (a + b * exp(-c * exp(-d * t)))
+    }
+
+    let fitted_curve = [];
+    let predicted_num_tickets = [[next_draw_data[1], next_draw_data[4]]];
+    const curve_parameters = prediction_funcs['previous_curve_parameters']
+
+    // grey prediction function
+    for (i = 1; i < 1800; i=i+10) {
+        fitted_curve.push([i, gompertz_curve(i, curve_parameters[0], curve_parameters[1], curve_parameters[2], curve_parameters[3])])
+    }
+
+    // set the dimensions and margins of the graph
+    var margin = {top: 50, right: 30, bottom: 50, left: 30},
+        width = 0.6 * document.documentElement.clientWidth,
+        height = 0.6 * width
+
+    // append the svg object to the body of the page
+    var ptix = d3.select("#predicted-num-tickets-purchased")
+        .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
+
+
+    // Add X axis
+    var x = d3.scaleLinear()
+        .domain([0, 1800])
+        .range([ 0, width ]);
+    ptix.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+
+    // Add Y axis
+    var y = d3.scaleLinear()
+        .domain([0, 800])
+        .range([ height, 0]);
+    ptix.append("g")
+        .call(d3.axisLeft(y));
+
+    // axes labels
+    ptix.append("text")
+            .attr("x", (width / 2))
+            .attr("y", 0 - (margin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "20px")
+            .attr("font-family", function(d,i) {return "serif"; })
+            .text("Predicted number of tickets purchased: " + (predicted_num_tickets[0][1] / 1000000).toPrecision(4) + " million");
+
+    ptix.append("text")
+        .attr("class", "x label")
+        .attr("text-anchor", "end")
+        .attr("x", width)
+        .attr("y", height -6)
+        .attr("font-family", function(d,i) {return "serif"; })
+        .text("Jackpot (millions USD)");
+
+    ptix.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "end")
+        .attr("y", 6)
+        .attr("dy", ".75em")
+        .attr("transform", "rotate(-90)")
+        .attr("font-family", function(d,i) {return "serif"; })
+        .text("Number of tickets purchased (millions)");
+
+    // Add dots
+    ptix.append('g')
+        .selectAll("dot")
+        .data(dataset)
+        .enter()
+        .append("circle")
+            .attr("cx", function (d) { return x(d["jackpot_amount"]); } )
+            .attr("cy", function (d) { return y(d["num_tickets_purchased"] / 1000000); } )
+            .attr("r", 2)
+            .style("fill", "#3399ff")
+
+    ptix.append('g')
+        .selectAll("dot")
+        .data(fitted_curve)
+        .enter()
+        .append("circle")
+            .attr("cx", function (d) { return x(d[0]); } )
+            .attr("cy", function (d) { return y(d[1] / 1000000); } )
+            .attr("r", 0.7)
+            .style("fill", "#676767")
+
+    // tooltip
+    var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([-10, 0])
+        .html(function(d) {
+            return "Jackpot amount: $" + Math.round(parseFloat(predicted_num_tickets[0][0])) + "MM<br>Predicted number of tickets purchased: $" + (predicted_num_tickets[0][1] / 1000000).toPrecision(4) + "MM";
+        })
+    ptix.call(tip);
+
+    // prediction dot
+    ptix.append('g')
+        .selectAll("dot")
+        .data(predicted_num_tickets)
+        .enter()
+        .append("circle")
+            .attr("cx", function (d) { return x(d[0]); } )
+            .attr("cy", function (d) { return y(d[1] / 1000000); } )
+            .attr("r", 4)
+            .style("fill", "#ff8000")
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide)
+
+    var pdist = d3.select("#predicted-winner-distribution")
+        .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+            .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
+
+  odds = {{ game.odds | safe}};
+
+  // tooltip
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+      return "Predicted number of winners: " + parseFloat((d[1] * predicted_num_tickets[0][1] / odds.denominator).toFixed(0));
+    })
+  pdist.call(tip);
+
+  // axes
+  var x = d3.scaleBand()
+      .range([0, width])
+      .padding(0.3);
+  var y = d3.scaleLog()
+      .range([height, 0])
+      .domain([odds.wins.find(element => element[0] == "5+1" )[1] / odds.denominator * predicted_num_tickets[0][1], odds.wins.find(element => element[0] == "0+1")[1] / odds.denominator * predicted_num_tickets[0][1]])
+      .nice();
+
+  // Scale the range of the data in the domains
+  x.domain(odds.wins.map(function(d) { return d[0]; }));
+
+  pdist.append('g')
+      .selectAll(".bar")
+       .data(odds.wins)
+       .enter()
+       .append("rect")
+       .attr("class", "bar")
+       .style("fill", "#3399ff")
+       .attr("x", function(d) { return x(d[0]); })
+       .attr("y", function(d) { return y(d[1] * predicted_num_tickets[0][1] / odds.denominator); })
+       .attr("width", x.bandwidth())
+       .attr("height", function(d) { return height - y(d[1] * predicted_num_tickets[0][1] / odds.denominator); })
+       .on('mouseover', tip.show)
+       .on('mouseout', tip.hide)
+
+
+  // add the x Axis
+  pdist.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+  // add the y Axis
+  pdist.append("g")
+      .call(d3.axisLeft(y));
+
+  // axes labels
+  pdist.append("text")
+          .attr("x", (width / 2))
+          .attr("y", 0 - (margin.top / 2))
+          .attr("text-anchor", "middle")
+          .style("font-size", "20px")
+          .attr("font-family", function(d,i) {return "serif"; })
+          .text("Predicted Winning Ticket Distribution");
+
+  pdist.append("text")
+      .attr("class", "x label")
+      .attr("text-anchor", "end")
+      .attr("x", margin.left + margin.right + width / 2)
+      .attr("y", height + 35 )
+      .attr("font-family", function(d,i) {return "serif"; })
+      .text("Matching white + red ball combination");
+
+  pdist.append("text")
+      .attr("class", "y label")
+      .attr("text-anchor", "end")
+      .attr("y", 3)
+      .attr("dy", ".75em")
+      .attr("transform", "rotate(-90)")
+      .attr("font-family", function(d,i) {return "serif"; })
+      .text("Number of tickets");
+
+
+  // previous draw stats
+  previous_text = "";
+  previous_numbers = most_recent_draw_data[4];
+  for (i of previous_numbers["white"]){
+    previous_text += i + ", "
+  }
+  previous_text = previous_text.slice(0, -2);
+  previous_text = previous_text + " | " + previous_numbers["red"]
+  $("#previous-drawing").text(`Most Recent Draw Date: ${most_recent_draw_data[0]}`)
+  $("#previous-numbers").text(`Numbers Drawn: ${previous_text}`)
+
+  $("#e-numtix").text(most_recent_draw_data[1].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $("#a-numtix").text(most_recent_draw_data[2].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $("#p-numtix").text((100 * Math.abs(most_recent_draw_data[1] - most_recent_draw_data[2]) / most_recent_draw_data[2]).toPrecision(3) + "%");
+
+  total_winners = most_recent_draw_data[3];
+  estimated_winners = (most_recent_draw_data[1] * 11750538 / 292201338).toFixed();
+  $("#e-total").text(estimated_winners.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $("#a-total").text(total_winners.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  $("#p-total").text((100 * Math.abs(total_winners - estimated_winners) / total_winners).toPrecision(3) + "%");
+
+  percentage_winners = total_winners / most_recent_draw_data[2]
+  $("#a-percent").text((100 * percentage_winners).toPrecision(3) + "%");
+  $("#p-percent").text(100 * Math.abs((percentage_winners - 11750538 / 292201338) / (11750538 / 292201338)).toPrecision(3) + "%");
+})
+</script>
+{% endblock content%}
