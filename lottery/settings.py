@@ -79,7 +79,7 @@ DATABASES = {
     'default': {
        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'lottery-db',
-        'USER': 'jonat',
+        'USER': 'doadmin',
         'PASSWORD': 'syw3jlfdbq3ej71g',
         'HOST': 'private-lottery-db-do-user-7717963-0.a.db.ondigitalocean.com',
         'PORT': '25060'
