@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'p9@la#vt!g=tjpxi4ez$7saoxp#l(dv6a0!)0v9(wf-+!*oso)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['whataretheodds.info', 'www.whataretheodds.info', 'localhost']
 
