@@ -47,7 +47,7 @@ class Game(models.Model):
         most_recent_draw = self.draws.exclude(drawn=False)[0]
         return [most_recent_draw.draw_date.strftime("%B %d, %Y"), most_recent_draw.predicted_num_tickets_purchased, most_recent_draw.num_tickets_purchased, most_recent_draw.winners_categories, most_recent_draw.numbers_drawn]
 
-
+'''
 @receiver(models.signals.post_save, sender=Draw, dispatch_uid='update_game_funcs')
 def update_game_funcs(sender, instance, **kwargs):
     if instance.drawn:
@@ -68,3 +68,4 @@ def update_game_funcs(sender, instance, **kwargs):
         p_jackpot_probability, p_yield = powerball_expected_return(instance.jackpot_amount, p_num_tickets_purchased)
         # saving predictions
         sender.objects.filter(id=instance.id).update(predicted_num_tickets_purchased=p_num_tickets_purchased, predicted_jackpot_probability=p_jackpot_probability, predicted_yield=p_yield)
+'''
