@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'p9@la#vt!g=tjpxi4ez$7saoxp#l(dv6a0!)0v9(wf-+!*oso)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['whataretheodds.info', 'www.whataretheodds.info', 'localhost']
 
 
 # Application definition
@@ -77,12 +77,12 @@ WSGI_APPLICATION = 'lottery.wsgi.application'
 
 DATABASES = {
     'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lottery_db',
+       'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'lottery-db',
         'USER': 'jonat',
-        'PASSWORD': 'Jg@124201m',
-        'HOST': 'localhost',
-        'PORT': ''
+        'PASSWORD': 'syw3jlfdbq3ej71g',
+        'HOST': 'private-lottery-db-do-user-7717963-0.a.db.ondigitalocean.com',
+        'PORT': '25060'
     }
 }
 
@@ -124,4 +124,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'), )
