@@ -10,9 +10,9 @@
 <table class="table table-bordered">
     <thead class="thead-light">
         <tr>
-            <th scope="col"><a href="#" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="The probability that a selection matches any of the winning combinations. This is the only value in this table that does not vary with each draw. <br><br>See the <a href=&quot;{% url 'methodology_view' %}&quot;>methodology page</a> for details on the derivation of this probability.">Probability of buying a winning ticket</a></th>
-            <th scope="col"><a href="#" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="A dollar would be better spent on a ticket when the yield is more positive than when the yield is more negative. Note that <b>a more positive yield does not guarantee losing less money</b>.<br><br> *Excludes Powerplay tickets.<br><br>See the <a href=&quot;{% url 'methodology_view' %}&quot;>methodology page</a> for details on how the yield is calculated.">Predicted percentage yield*</a></th>
-            <th scope="col"><a href="#" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="The estimated odds that one or more tickets will win the jackpot.<br><br>See the <a href=&quot;{% url 'methodology_view' %}&quot;>methodology page</a> for details on the derivation of this value.">Predicted odds of Jackpot being won</a></th>
+            <th scope="col"><a href="#" tabindex="0" role="button" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="The probability that a selection matches any of the winning combinations. This is the only value in this table that does not vary with each draw. <br><br>See the <a href=&quot;{% url 'methodology_view' %}&quot;>methodology page</a> for details on the derivation of this probability.">Probability of buying a winning ticket</a></th>
+            <th scope="col"><a href="#" tabindex="0" role="button" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="A dollar would be better spent on a ticket when the yield is more positive than when the yield is more negative. Note that <b>a more positive yield does not guarantee losing less money</b>.<br><br> *Excludes Powerplay tickets.<br><br>See the <a href=&quot;{% url 'methodology_view' %}&quot;>methodology page</a> for details on how the yield is calculated.">Predicted percentage yield*</a></th>
+            <th scope="col"><a href="#" tabindex="0" role="button" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="The estimated odds that one or more tickets will win the jackpot.<br><br>See the <a href=&quot;{% url 'methodology_view' %}&quot;>methodology page</a> for details on the derivation of this value.">Predicted odds of Jackpot being won</a></th>
         </tr>
     </thead>
     <tbody>
@@ -39,9 +39,9 @@
     <thead class="thead-light">
         <tr>
             <th scope="col"></th>
-            <th scope="col"><a href="#" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="Values estimated before the draw occured">Estimated</a></th>
-            <th scope="col"><a href="#" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="Actual values obtained after the draw">Actual</a></th>
-            <th scope="col"><a href="#" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="Measures how much the estimated and actual values differ. The closer the actual and estimated values are, the lesser the percent error.<br><br>See <a href='https://en.wikipedia.org/wiki/Approximation_error'>approximation error</a>.">Percent Error</a></th>
+            <th scope="col"><a href="#" tabindex="0" role="button" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="Values estimated before the draw occured">Estimated</a></th>
+            <th scope="col"><a href="#" tabindex="0" role="button" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="Actual values obtained after the draw">Actual</a></th>
+            <th scope="col"><a href="#" tabindex="0" role="button" data-toggle="popover" data-placement="bottom" data-trigger="focus" data-html="true" data-content="Measures how much the estimated and actual values differ. The closer the actual and estimated values are, the lesser the percent error.<br><br>See <a href='https://en.wikipedia.org/wiki/Approximation_error'>approximation error</a>.">Percent Error</a></th>
         </tr>
     </thead>
     <tbody>
@@ -165,6 +165,7 @@
 <script>
 
 $(document).ready(function(){
+    $('[data-toggle="popover"]').on('click', function(e) {e.preventDefault(); return true;});
     $(function () {
         $('[data-toggle="popover"]').popover()
     })
@@ -248,6 +249,9 @@ $(document).ready(function(){
         .attr("class", "y label")
         .attr("text-anchor", "end")
         .attr("y", 6)
+        .attr("dy", ".75em")
+        .attr("transform", "rotate(-90)")
+        .style("font-size", "5px")
         .attr("font-family", function(d,i) {return "serif"; })
         .text("Number of tickets purchased (millions)");
 
@@ -354,7 +358,7 @@ $(document).ready(function(){
           .attr("x", (width / 2))
           .attr("y", 0 - (margin.top / 2))
           .attr("text-anchor", "middle")
-          .style("font-size", "20px")
+          .style("font-size", "15px")
           .attr("font-family", function(d,i) {return "serif"; })
           .text("Predicted Winning Ticket Distribution");
 
@@ -370,6 +374,9 @@ $(document).ready(function(){
       .attr("class", "y label")
       .attr("text-anchor", "end")
       .attr("y", 3)
+      .attr("dy", ".75em")
+      .attr("transform", "rotate(-90)")
+      .style("font-size", "5px")
       .attr("font-family", function(d,i) {return "serif"; })
       .text("Number of tickets");
 
