@@ -233,7 +233,7 @@ $(document).ready(function(){
             .attr("x", (width / 2))
             .attr("y", 0 - (margin.top / 2))
             .attr("text-anchor", "middle")
-            .style("font-size", "20px")
+            .style("font-size", "15px")
             .attr("font-family", function(d,i) {return "serif"; })
             .text("Predicted num tickets purchased: " + (predicted_num_tickets[0][1] / 1000000).toPrecision(4) + " million");
 
@@ -251,7 +251,7 @@ $(document).ready(function(){
         .attr("y", 6)
         .attr("dy", ".75em")
         .attr("transform", "rotate(-90)")
-        .style("font-size", "5px")
+        .style("font-size", "10px")
         .attr("font-family", function(d,i) {return "serif"; })
         .text("Number of tickets purchased (millions)");
 
@@ -376,7 +376,7 @@ $(document).ready(function(){
       .attr("y", 3)
       .attr("dy", ".75em")
       .attr("transform", "rotate(-90)")
-      .style("font-size", "5px")
+      .style("font-size", "10px")
       .attr("font-family", function(d,i) {return "serif"; })
       .text("Number of tickets");
 
