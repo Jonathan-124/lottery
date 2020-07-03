@@ -52,7 +52,7 @@
             <td id="p-numtix"></td>
         </tr>
         <tr>
-            <td>Total number of winner tickets</td>
+            <td>Total number of winning tickets</td>
             <td id="e-total"></td>
             <td id="a-total"></td>
             <td id="p-total"></td>
@@ -165,7 +165,6 @@
 <script>
 
 $(document).ready(function(){
-    $('[data-toggle="popover"]').on('click', function(e) {e.preventDefault(); return true;});
     $(function () {
         $('[data-toggle="popover"]').popover()
     })
@@ -235,7 +234,7 @@ $(document).ready(function(){
             .attr("text-anchor", "middle")
             .style("font-size", "20px")
             .attr("font-family", function(d,i) {return "serif"; })
-            .text("Predicted number of tickets purchased: " + (predicted_num_tickets[0][1] / 1000000).toPrecision(4) + " million");
+            .text("Predicted num tickets purchased: " + (predicted_num_tickets[0][1] / 1000000).toPrecision(4) + " million");
 
     ptix.append("text")
         .attr("class", "x label")
@@ -249,8 +248,6 @@ $(document).ready(function(){
         .attr("class", "y label")
         .attr("text-anchor", "end")
         .attr("y", 6)
-        .attr("dy", ".75em")
-        .attr("transform", "rotate(-90)")
         .attr("font-family", function(d,i) {return "serif"; })
         .text("Number of tickets purchased (millions)");
 
@@ -367,14 +364,12 @@ $(document).ready(function(){
       .attr("x", margin.left + margin.right + width / 2)
       .attr("y", height + 35 )
       .attr("font-family", function(d,i) {return "serif"; })
-      .text("Matching white + red ball combination");
+      .text("White + red ball combination");
 
   pdist.append("text")
       .attr("class", "y label")
       .attr("text-anchor", "end")
       .attr("y", 3)
-      .attr("dy", ".75em")
-      .attr("transform", "rotate(-90)")
       .attr("font-family", function(d,i) {return "serif"; })
       .text("Number of tickets");
 
