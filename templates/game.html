@@ -3,7 +3,7 @@
 {% block title %}What are the odds | Powerball lottery statistical analysis{% endblock title %}
 
 {% block content %}
-
+<div class="container">
 <h4 id="next-drawing" class="text-center"></h4>
 <p id="estimated-jackpot" class="text-center"></p>
 <br>
@@ -162,6 +162,7 @@
     </div>
 </div>
 <br><br>
+</div>
 <script>
 
 $(document).ready(function(){
@@ -240,8 +241,8 @@ $(document).ready(function(){
     ptix.append("text")
         .attr("class", "x label")
         .attr("text-anchor", "end")
-        .attr("x", width)
-        .attr("y", height -6)
+        .attr("x", margin.left + margin.right + width / 2)
+        .attr("y", height + 35 )
         .attr("font-family", function(d,i) {return "serif"; })
         .text("Jackpot (millions USD)");
 
@@ -253,7 +254,7 @@ $(document).ready(function(){
         .attr("transform", "rotate(-90)")
         .style("font-size", "10px")
         .attr("font-family", function(d,i) {return "serif"; })
-        .text("Number of tickets purchased (millions)");
+        .text("Number of tickets (millions)");
 
     // Add dots
     ptix.append('g')

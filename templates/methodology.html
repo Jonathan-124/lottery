@@ -3,6 +3,7 @@
 {% block title %}What are the odds | Powerball lottery statistical analysis methodology{% endblock title %}
 
 {% block content %}
+<div class="container">
 <h2>Methodology</h2>
 <br>
 <p>
@@ -333,7 +334,7 @@ $$
     With all being said and done, <b>lotteries are not investments</b>, and <b>players should only infrequently spend a tiny portion of their disposable income on any lottery</b>, if they choose to do so.
     While the allure of winning the jackpot by spending a measly \(\$2\) is great, it is never a good idea to habitually spend more than one can afford on gambling.
 </p>
-
+</div>
 
 <script>
 function gompertz_curve(t, a, b, c, d){
@@ -386,15 +387,15 @@ svg.append("text")
         .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
         .attr("text-anchor", "middle")
-        .style("font-size", "20px")
+        .style("font-size", "15px")
         .attr("font-family", function(d,i) {return "serif"; })
         .text("Powerball Jackpot amount vs. Number of tickets purchased");
 
 svg.append("text")
     .attr("class", "x label")
     .attr("text-anchor", "end")
-    .attr("x", width)
-    .attr("y", height -6)
+    .attr("x", margin.left + margin.right + width / 2)
+    .attr("y", height + 35 )
     .attr("font-family", function(d,i) {return "serif"; })
     .text("Jackpot (millions USD)");
 
@@ -404,8 +405,9 @@ svg.append("text")
     .attr("y", 6)
     .attr("dy", ".75em")
     .attr("transform", "rotate(-90)")
+    .style("font-size", "10px")
     .attr("font-family", function(d,i) {return "serif"; })
-    .text("Number of tickets purchased (millions)");
+    .text("Number of tickets (millions)");
 
   // Add dots
   svg.append('g')
@@ -493,7 +495,7 @@ dist.append("text")
         .attr("x", (width / 2))
         .attr("y", 0 - (margin.top / 2))
         .attr("text-anchor", "middle")
-        .style("font-size", "20px")
+        .style("font-size", "15px")
         .attr("font-family", function(d,i) {return "serif"; })
         .text("Probabilities of Matching Combinations");
 
@@ -511,6 +513,7 @@ dist.append("text")
     .attr("y", 3)
     .attr("dy", ".75em")
     .attr("transform", "rotate(-90)")
+    .style("font-size", "10px")
     .attr("font-family", function(d,i) {return "serif"; })
     .text("Probability of match");
 
