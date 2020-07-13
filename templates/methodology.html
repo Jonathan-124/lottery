@@ -289,7 +289,7 @@ $$
     $$
 </p>
 <h3>
-    Advertised vs. Expected Jackpot amounts
+    Advertised vs. Expected Jackpot Amounts
 </h3>
 <p>
     We can use this distribution to calculate \(E(\text{Jackpot})\) (the expected jackpot amount) as a function of \(x\) (the advertised jackpot amount):
@@ -318,6 +318,68 @@ $$
 </p>
 <br>
 <h3>
+    What About Power Play?
+</h3>
+<p>
+    Power Play is an option available to players at the time of purchasing their tickets, where players pay \(\$3\) instead of \(\$2\) for each ticket.
+    With Power Play, the prize amounts (with the exception of the jackpot and the second prize) are increased by a multiplier chosen right before the drawing with the following probabilities:
+    <table class="table table-bordered table-hover">
+        <caption>Power Play Multiplier Probabilities</caption>
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Power PlayMultiplier</th>
+                <th scope="col">Probability (Jackpot under $150 million)</th>
+                <th scope="col">Probability (Jackpot over $150 million)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>\(2\)</td>
+                <td>\(\frac{24}{43}\)</td>
+                <td>\(\frac{24}{42}\)</td>
+            </tr>
+            <tr>
+                <td>\(3\)</td>
+                <td>\(\frac{13}{43}\)</td>
+                <td>\(\frac{13}{42}\)</td>
+            </tr>
+            <tr>
+                <td>\(4\)</td>
+                <td>\(\frac{3}{43}\)</td>
+                <td>\(\frac{3}{42}\)</td>
+            </tr>
+            <tr>
+                <td>\(5\)</td>
+                <td>\(\frac{2}{43}\)</td>
+                <td>\(\frac{2}{42}\)</td>
+            </tr>
+            <tr>
+                <td>\(10\)</td>
+                <td>\(\frac{1}{43}\)</td>
+                <td>\(0\)</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    The Jackpot amount does not change regardless of the multiplier, and the second prize always doubles to \($2,000,000\). The expected value of \(P\), the Power Play multiplier random variable can be found using the above probabilities:
+    $$ 
+    \begin{aligned}
+    E(P) &= \begin{cases} \frac{24}{43} \cdot 2 + \dots + \frac{1}{43} \cdot 10, \text{ Jackpot } < $ \text{150 million} \\ \frac{24}{42} \cdot 2 + \dots + \frac{0}{43} \cdot 10, \text{ Jackpot } > $ \text{150 million}\end{cases} \\
+    &= \begin{cases} \frac{119}{43}, \text{ Jackpot } < $ \text{150 million} \\ \frac{109}{42}, \text{ Jackpot } < $ \text{150 million} \\ \end{cases}
+    \end{aligned}
+    $$
+    We can use the expected values of the Power Play multiplier to calculate the expected returns for each Power Play ticket we buy using the same equation as above:
+    $$
+    \begin{aligned}
+    E(R) &= \sum P_i R_i \\
+    &= P(W=5, R=1) \cdot (E(\text{Jackpot}) - 3) + P(W=5, R=0) \cdot (2,000,000 - 3) + P(W=4, R=1) \cdot (50,000 - 3) \times E(P) + \cdots + P(\text{losing ticket})\cdot(-3)\\
+    &\approx \begin{case} \frac{1}{292,201,338} \cdot E(\text{Jackpot}) - 2.18 , \text{ Jackpot } < $ \text{150 million} \\ \frac{1}{292,201,338} \cdot E(\text{Jackpot}) - 2.22 , \text{ Jackpot } > $ \text{150 million} \end{case}
+    \end{aligned}
+    $$
+    In other words, the expected return is always lower for the \(\$3\) Power Play tickets than the regular \(\$2\) Powerball tickets. It is therefore always a better choice to not choose the Power Play option.
+</p>
+<br>
+<h3>
     Discussion
 </h3>
 <p>
@@ -328,7 +390,7 @@ $$
     The first is the common misunderstanding of what the percentage yield means. It is essential to remember that <b>a better yield does not guarantee winning money</b>. After all, the odds stay the same regardless of what the yield is.
     What it does mean is that <b>the same \(\$2\) would be better spent on a ticket when the yield is higher than when the yield is lower</b>.
     <br><br>
-    The second is the failure to account for the three horsemen of the jackpot winner apocalypse: annuity, taxes, and inflation. Because these factors are highly variable and dependent on a multitude of other variables, they were not included in the yield model.
+    The second is the failure to account for the three horsemen of the jackpot apocalypse: annuity, taxes, and inflation. Because these factors are highly variable and dependent on a multitude of other variables, they were not included in the yield model.
     However, it is certain that the actual jackpot that a winner receives would be much less than the advertised jackpot due to these three variables. In turn, the expected return/yield would be quite a bit lower than the model above predicts.
     <br><br>
     With all being said and done, <b>lotteries are not investments</b>, and <b>players should only infrequently spend a tiny portion of their disposable income on any lottery</b>, if they choose to do so.
