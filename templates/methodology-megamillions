@@ -230,21 +230,21 @@ $$
     Expected Return
 </h3>
 <p>
-    Using the probabilities we have calculated above, we can calculate the <a href="https://en.wikipedia.org/wiki/Expected_return">expected return</a> of a Powerball ticket.
+    Using the probabilities we have calculated above, we can calculate the <a href="https://en.wikipedia.org/wiki/Expected_return">expected return</a> of a Mega Millions ticket.
     In other words, we can think of the \(\$2\) cost to purchase a ticket as an "investment", and calculate the expected amount of money will be gained/lost.
     Let \(x\) be the advertised Jackpot amount, \(E(R)\) be the expected return in dollars, \(P_i\) be the probability of each combination, and \(R_i\) be the associated prize amount with each combination, minus the \(\$2\) ticket cost:
     $$
     \begin{aligned}
     E(R) &= \sum P_i R_i \\
-    &= P(W=5, R=1) \cdot (x - 2) + P(W=5, R=0) \cdot (1,000,000 - 2) + \cdots + P(\text{losing ticket})\cdot(-2)\\
-    &= P(W=5, R=1) \cdot x + P(W=5, R=0) \cdot 1,000,000 + \cdots - 2 \\
-    &\approx \frac{1}{292,201,338} \cdot x - 1.68
+    &= P(W=5, G=1) \cdot (x - 2) + P(W=5, G=0) \cdot (1,000,000 - 2) + \cdots + P(\text{losing ticket})\cdot(-2)\\
+    &= P(W=5, G=1) \cdot x + P(W=5, G=0) \cdot 1,000,000 + \cdots - 2 \\
+    &\approx \frac{1}{302,575,350} \cdot x - 1.75
     \end{aligned}
     $$
     Here we get the first glimpse of a simple equation we can draw conclusions with.
     As the Jackpot changes, the expected return on investment also changes proportional the Jackpot amount!
-    As a naive solution, we can solve for the break-even point: when \(E(R)=0\), \(x = 490,936,628\).
-    In other words, when the jackpot is greater than \(\$490,936,628\), the expected return is actually positive!
+    As a naive solution, we can solve for the break-even point: when \(E(R)=0\), \(x = 530,420,124\).
+    In other words, when the jackpot is greater than \(\$530,420,124\), the expected return is actually positive!
     However, we'll soon see the flaws with this preliminary conclusion that we have drawn.
 </p>
 <br>
@@ -259,7 +259,7 @@ $$
     To know the expected number of multiple Jackpot winners, we would have to know the number of tickets purchased!
     However, we can only estimate the number of tickets purchased before each drawing, which leads us to...
     <div id="asd"></div>
-    The graph above is a scatterplot of jackpot amount vs. the number of tickets purchased for all Powerball draws since the 2015 rule change.
+    The graph above is a scatterplot of jackpot amount vs. the number of tickets purchased for all Mega Millions draws since the 2017 rule change.
     Each blue dot is an instance of a past draw. A general trend can be seen: when the advertised jackpot amount is less than ~\(\$300\) million, the number of tickets purchased is roughly the same.
     This can be attributed to habitual Powerball lottery players who purchase tickets at a fixed schedule.
     During less common instances when the jackpot increases beyond a certain threshold, habitual lottery players might increase the number of tickets they purchase, while generally non-lottery playing folks might start purchasing tickets as well, leading to the increase in number of tickets purchased above the \(\$300\) million mark.
@@ -309,7 +309,7 @@ $$
     $$
     Using this equation, we can go back to our expected returns equation we calculated earlier. Using the revised expected Jackpot amount instead of the advertised one:
     $$
-    E(R) = \frac{1}{292,201,338} \cdot E(\text{Jackpot}) - 1.68
+    E(R) = \frac{1}{302,575,350} \cdot E(\text{Jackpot}) - 1.75
     $$
     The percentage yield is the expected return divided by the cost of a single ticket:
     $$
@@ -318,73 +318,105 @@ $$
 </p>
 <br>
 <h3>
-    What About Power Play?
+    What About Megaplier?
 </h3>
 <p>
-    Power Play is an option available to players at the time of purchasing their tickets, where players pay \(\$3\) instead of \(\$2\) for each ticket.
-    With Power Play, the prize amounts (with the exception of the jackpot and the second prize) are increased by a multiplier chosen right before the drawing with the following probabilities:
+    Megaplier is an option available to players at the time of purchasing their tickets, where players pay \(\$3\) instead of \(\$2\) for each ticket.
+    With Megaplier, the prize amounts (with the exception of the jackpot) are increased by a multiplier chosen right before the drawing with the following probabilities:
     <table class="table table-bordered table-hover">
-        <caption>Power Play Multiplier Probabilities</caption>
+        <caption>Megaplier Multiplier Probabilities</caption>
         <thead class="thead-light">
             <tr>
-                <th scope="col">Power PlayMultiplier</th>
-                <th scope="col">Probability (Jackpot under $150 million)</th>
-                <th scope="col">Probability (Jackpot over $150 million)</th>
+                <th scope="col">Megaplier Multiplier</th>
+                <th scope="col">Probability</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>\(2\)</td>
-                <td>\(\frac{24}{43}\)</td>
-                <td>\(\frac{24}{42}\)</td>
+                <td>\(\frac{5}{15}\)</td>
             </tr>
             <tr>
                 <td>\(3\)</td>
-                <td>\(\frac{13}{43}\)</td>
-                <td>\(\frac{13}{42}\)</td>
+                <td>\(\frac{6}{15}\)</td>
             </tr>
             <tr>
                 <td>\(4\)</td>
-                <td>\(\frac{3}{43}\)</td>
-                <td>\(\frac{3}{42}\)</td>
+                <td>\(\frac{3}{15}\)</td>
             </tr>
             <tr>
                 <td>\(5\)</td>
-                <td>\(\frac{2}{43}\)</td>
-                <td>\(\frac{2}{42}\)</td>
-            </tr>
-            <tr>
-                <td>\(10\)</td>
-                <td>\(\frac{1}{43}\)</td>
-                <td>\(0\)</td>
+                <td>\(\frac{1}{15}\)</td>
             </tr>
         </tbody>
     </table>
     <br>
-    The Jackpot amount does not change regardless of the multiplier, and the second prize always doubles to \($2,000,000\). The expected value of \(P\), the Power Play multiplier random variable can be found using the above probabilities:
+    The Jackpot amount does not change regardless of the multiplier. The expected value of \(M\), the Megaplier multiplier random variable can be found using the above probabilities:
     $$ 
     \begin{aligned}
-    E(P) &= \begin{cases} \frac{24}{43} \cdot 2 + \dots + \frac{1}{43} \cdot 10, \text{ Jackpot } < $ \text{150 million} \\ \frac{24}{42} \cdot 2 + \dots + \frac{0}{43} \cdot 10, \text{ Jackpot } > $ \text{150 million}\end{cases} \\
-    &= \begin{cases} \frac{119}{43}, \text{ Jackpot } < $ \text{150 million} \\ \frac{109}{42}, \text{ Jackpot } < $ \text{150 million} \\ \end{cases}
+    E(M) &= \frac{5}{15} \cdot 2 + \dots + \frac{1}{15} \cdot 5 \\
+    &= 3
     \end{aligned}
     $$
     We can use the expected values of the Power Play multiplier to calculate the expected returns for each Power Play ticket we buy using the same equation as above:
     $$
     \begin{aligned}
     E(R) &= \sum P_i R_i \\
-    &= P(W=5, R=1) \cdot (E(\text{Jackpot}) - 3) + P(W=5, R=0) \cdot (2,000,000 - 3) + P(W=4, R=1) \cdot (50,000 - 3) \times E(P) + \cdots + P(\text{losing ticket})\cdot(-3)\\
-    &\approx \begin{case} \frac{1}{292,201,338} \cdot E(\text{Jackpot}) - 2.18 , \text{ Jackpot } < $ \text{150 million} \\ \frac{1}{292,201,338} \cdot E(\text{Jackpot}) - 2.22 , \text{ Jackpot } > $ \text{150 million} \end{case}
+    &= P(W=5, G=1) \cdot (E(\text{Jackpot}) - 3) + P(W=5, G=0) \cdot (1,000,000 - 3) \times E(P) + P(W=4, G=1) \cdot (10,000 - 3) \times E(P) + \cdots + P(\text{losing ticket})\cdot(-3)\\
+    &\approx \frac{1}{302,575,350} \cdot E(\text{Jackpot}) - 2.26
     \end{aligned}
     $$
-    In other words, the expected return is always lower for the \(\$3\) Power Play tickets than the regular \(\$2\) Powerball tickets. It is therefore always a better choice to not choose the Power Play option.
+    In other words, the expected return is always lower for the \(\$3\) Megaplier tickets than the regular \(\$2\) Mega Millions tickets. It is therefore always a better choice to not choose the Megaplier option.
+</p>
+<br>
+<h3>
+    What About Just the Jackpot?
+</h3>
+<p>
+    Just the Jackpot is an option available to players (in certain states) at the time of purchasing their tickets, where players pay \(\$3\) instead of \(\$2\) for each ticket.
+    With Just the Jackpot, the player spends \(\$3\) for two plays, but in turn forgoes all other prizes except for the Jackpot, as summarized by the following table:
+    <table class="table table-bordered table-hover">
+        <caption>Just the Jackpot option</caption>
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Combination</th>
+                <th scope="col">Probability</th>
+                <th scope="col">Prize</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>\(5\) white + \(1\) Mega Ball</td>
+                <td>\(\frac{2}{302,575,350}\)</td>
+                <td>\(\text{Jackpot}\) 🥳</td>
+            </tr>
+            <tr>
+                <td>All other combinations</td>
+                <td>\(\frac{302,575,348}{302,575,350}\)</td>
+                <td>\(\text{Nothing}\) 😔</td>
+            </tr>
+        </tbody>
+    </table>
+    We can find the expected returns for the Just the Jackpot option: 
+    $$
+    \begin{aligned}
+    E(R) &= \sum P_i R_i \\
+    &= \(\frac{2}{302,575,350}\) \cdot E(\text{Jackpot}) - \frac{302,575,348}{302,575,350} \cdot 3 \\
+    &\approx \frac{2}{302,575,350} \cdot E(\text{Jackpot}) - 3.00
+    \end{aligned}
+    $$
+    If we graph the expected return function for a normal Mega Millions ticket vs. the expected return function for a Just the Jackpot ticket, we get the following graph below:
+    XXX
+    An interesting observation we can draw using this graph is that, the option that gives a better return is dependent on the expected Jackpot amount. 
+    When the expected jackpot amount increases above the intersection point, it is better to purchase the Just the Jackpot option, whereas when the expected jackpot amount is less than the intersection point, it is better to opt for the vanilla Mega Millions option.
 </p>
 <br>
 <h3>
     Discussion
 </h3>
 <p>
-    The methods outlined above are used to make the four main predictions for each Powerball draw: number of tickets sold, predicted winner distribution, probability of jackpot being won, and percentage yield.
-    To the casual reader, the most accessible predictor is the predicted percentage yield, which indicates the expected percentage of money gained/lost on the purchase of Powerball tickets.
+    The methods outlined above are used to make the four main predictions for each Mega Millions draw: number of tickets sold, predicted winner distribution, probability of jackpot being won, and percentage yield.
+    To the casual reader, the most accessible predictor is the predicted percentage yield, which indicates the expected percentage of money gained/lost on the purchase of Mega Millions tickets.
     Unfortunately, while the predicted yield is arguably the most useful predictor, it has two massive drawbacks:
     <br><br>
     The first is the common misunderstanding of what the percentage yield means. It is essential to remember that <b>a better yield does not guarantee winning money</b>. After all, the odds stay the same regardless of what the yield is.
